@@ -43,11 +43,14 @@ public class Person {
     private int id;
     private String firstName;
     private String lastName;
-    private String gender;
+    private int gender;
     private int age;
     private AgeGroup ageGroup;
 
-    public Person(int id, String firstName, String lastName, String gender, int age){
+    private int maleIconID;
+    private int femaleIconID;
+
+    public Person(int id, String firstName, String lastName, int gender, int age){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,13 +58,26 @@ public class Person {
         this.age = age;
 
         this.ageGroup = age > 60 ? RETIRED : (age < 21 ? STUDENT : WORKER);
+
+        this.femaleIconID = gender == 2 ? ageGroup.getIconID() : android.R.color.transparent;
+        this.maleIconID = gender == 1 ? ageGroup.getIconID() : android.R.color.transparent;
     }
 
     public AgeGroup getAgeGroup () {
         return ageGroup;
     }
 
+    public String getFirstName() { return firstName;}
+
+    public String getLastName() { return lastName; }
+
+    public int getGender() { return gender; }
+
+    public int getMaleIconID() { return maleIconID; }
+
+    public int getFemaleIconID() { return femaleIconID; }
+
     public String getFullName() {
-        return firstName + lastName;
+        return firstName + " " + lastName;
     }
 }

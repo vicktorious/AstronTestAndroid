@@ -1,14 +1,21 @@
 package com.example.vick.astrontest;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextClock;
 import android.widget.TextView;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -26,8 +33,16 @@ public class PersonAdapter extends BaseAdapter {
     }
 
     public void setList(List<Person> people) {
-        this.people.clear();
         this.people = people;
+    }
+
+    public void orderList() {
+        Collections.sort(people, new Comparator<Person>() {
+            @Override
+            public int compare(Person person1, Person person2) {
+                return person1.getLastName().compareToIgnoreCase(person2.getLastName());
+            }
+        });
     }
 
     @Override
@@ -46,8 +61,9 @@ public class PersonAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        ImageView ivIcon;
+        ImageView ivFemIcon;
         TextView tvName;
+        ImageView ivMalIcon;
     }
 
     @Override
@@ -57,16 +73,18 @@ public class PersonAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             v = inflater.inflate(R.layout.row, null);
             ViewHolder holder = new ViewHolder();
-            holder.ivIcon = (ImageView) v.findViewById(R.id.ivAgeGroup);
+            holder.ivFemIcon = (ImageView) v.findViewById(R.id.ivFemale);
             holder.tvName = (TextView) v.findViewById(R.id.tvName);
+            holder.ivMalIcon = (ImageView) v.findViewById(R.id.ivMale);
             v.setTag(holder);
         }
 
         Person person = people.get(i);
         if (person != null) {
             ViewHolder holder = (ViewHolder) v.getTag();
-            holder.ivIcon.setImageResource(person.getAgeGroup().getIconID());
+            holder.ivFemIcon.setImageResource(person.getFemaleIconID());
             holder.tvName.setText(person.getFullName());
+            holder.ivMalIcon.setImageResource(person.getMaleIconID());
         }
         return v;
     }
